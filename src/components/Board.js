@@ -7,7 +7,7 @@ export default class Board extends Component {
             <Square 
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
-                style={this.props.style}
+                style={this.props.style[i]}
             />
         )
     }

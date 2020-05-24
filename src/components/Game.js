@@ -7,9 +7,8 @@ export default class Game extends Component {
         this.state = {
             board: new Array(9).fill(null),
             toggle: true,
-            style: {
-                backgroundColor: 'lightgray'
-            }
+            // list for every square
+            style: new Array(9).fill({backgroundColor: 'lightgray'})
         }
     }
 
@@ -20,15 +19,17 @@ export default class Game extends Component {
         }
 
         board[i] = this.state.toggle? 'x' : 'o';
-
-        if (this.isWinner(board)) {
+        const winner = this.isWinner(board);
+        if (winner) {
+            const style = new Array(9).fill({backgroundColor: 'lightgray'});
+            for (var j=0; j<3; j++)
+                style[winner[j]] = {backgroundColor: 'red'};
             this.setState({
-                style: {backgroundColor: 'red'}
+                style: style
             })
             return;
         }
 
-        
         this.setState({
             toggle: !this.state.toggle
         })
