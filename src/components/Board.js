@@ -14,8 +14,11 @@ export default class Board extends Component {
 
     render() {
         return (
-            <div>
-                <table>
+            <div style={{
+                position: 'absolute', left: '50%', top: '50%',
+                transform: 'translate(-50%, -50%)'
+            }}>
+                <table style={{border: 'solid'}}>
                     <tbody>
                         <tr className="row">
                             {this.renderSquare(0)}

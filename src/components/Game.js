@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import Reset from './Reset';
-import ScoreBoard from './ScoreBoard'
+import ScoreBoard from './ScoreBoard';
+import DisplayResult from './DisplayResult';
 
 export default class Game extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ export default class Game extends Component {
             // list for every square
             style: new Array(9).fill({backgroundColor: 'lightgray'}),
             // player scores [0] for 'x', [1] for 'o'
-            scores: new Array(2).fill(0)
+            scores: new Array(2).fill(0),
+            result: null //x wins, o wins, or tie
         }
     }
 
@@ -32,14 +34,29 @@ export default class Game extends Component {
             for (var j=0; j<3; j++)
                 style[winner[j]] = {backgroundColor: 'red'};
             this.setState({
+                // display winner
+                result: board[winner[0]],
+                // change squares to winner
                 style: style
             })
             return;
         }
 
+        if (this.isBoardFull(board)) { // tie game
+            this.setState({
+                result: 'tie'
+            })
+        }
+
         this.setState({
             toggle: !this.state.toggle
         })
+    }
+
+    isBoardFull(board) {
+        // Return true if board is filled
+        return !Boolean(board.filter((square) => square === null).length)
+
     }
 
     addScore(winner) {
@@ -80,6 +97,7 @@ export default class Game extends Component {
         this.setState({
             board: new Array(9).fill(null),
             toggle: true,
+            result: null,
             style: new Array(9).fill({backgroundColor: 'lightgray'})
         })
     }
@@ -89,16 +107,15 @@ export default class Game extends Component {
     render() {
         return (
             <div className='game'>
+                <DisplayResult value={this.state.result}/>
                 <div className='board'>
                     <Board 
                         squares={this.state.board} 
                         onClick={(i) => this.onClick(i)}
                         style = {this.state.style}
                     />
-                    <ScoreBoard score={this.state.scores}/>
-                </div>
-                <div className="reset-button">
                     <Reset onClick={() => this.resetBoard()}/>
+                    <ScoreBoard score={this.state.scores}/>
                 </div>
             </div>
         )

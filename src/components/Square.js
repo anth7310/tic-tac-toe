@@ -13,7 +13,7 @@ export default function Square(props) {
     return (
         <th 
             className="square" 
-            onClick={props.onClick} 
+            onClick={props.onClick}
             style={squareStyle}>
 
             {props.value}
