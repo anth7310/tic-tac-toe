@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import Reset from './Reset';
+import ScoreBoard from './ScoreBoard'
 
 export default class Game extends Component {
     constructor(props) {
@@ -9,7 +10,9 @@ export default class Game extends Component {
             board: new Array(9).fill(null),
             toggle: true,
             // list for every square
-            style: new Array(9).fill({backgroundColor: 'lightgray'})
+            style: new Array(9).fill({backgroundColor: 'lightgray'}),
+            // player scores [0] for 'x', [1] for 'o'
+            scores: new Array(2).fill(0)
         }
     }
 
@@ -22,6 +25,9 @@ export default class Game extends Component {
         board[i] = this.state.toggle? 'x' : 'o';
         const winner = this.isWinner(board);
         if (winner) {
+            // add score using winner index
+            this.addScore(board[winner[0]]);
+            // change winning square colors
             const style = new Array(9).fill({backgroundColor: 'lightgray'});
             for (var j=0; j<3; j++)
                 style[winner[j]] = {backgroundColor: 'red'};
@@ -34,6 +40,19 @@ export default class Game extends Component {
         this.setState({
             toggle: !this.state.toggle
         })
+    }
+
+    addScore(winner) {
+        const scores = this.state.scores;
+        if (winner === 'x') {
+            this.setState({
+                scores: [scores[0]+1, scores[1]]
+            });
+        } else {
+            this.setState({
+                scores: [scores[0], scores[1]+1]
+            });
+        }
     }
 
     isWinner(board) {
@@ -76,6 +95,7 @@ export default class Game extends Component {
                         onClick={(i) => this.onClick(i)}
                         style = {this.state.style}
                     />
+                    <ScoreBoard score={this.state.scores}/>
                 </div>
                 <div className="reset-button">
                     <Reset onClick={() => this.resetBoard()}/>
