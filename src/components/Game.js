@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from './Board';
+import Reset from './Reset';
 
 export default class Game extends Component {
     constructor(props) {
@@ -55,6 +56,17 @@ export default class Game extends Component {
         return null;
     }
 
+    // Reset Button
+    resetBoard() {
+        this.setState({
+            board: new Array(9).fill(null),
+            toggle: true,
+            style: new Array(9).fill({backgroundColor: 'lightgray'})
+        })
+    }
+
+    // ScoreBoard
+
     render() {
         return (
             <div className='game'>
@@ -64,6 +76,9 @@ export default class Game extends Component {
                         onClick={(i) => this.onClick(i)}
                         style = {this.state.style}
                     />
+                </div>
+                <div className="reset-button">
+                    <Reset onClick={() => this.resetBoard()}/>
                 </div>
             </div>
         )
